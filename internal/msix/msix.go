@@ -101,7 +101,6 @@ func Ensure(home string) error {
                 {"remote", "add", "origin", repoURL},
                 {"fetch", "--depth", "1", "origin", rev},
                 {"checkout", "-q", "FETCH_HEAD"},
-                {"submodule", "update", "--init", "--recursive", "--depth", "1"},
             }
             for _, st := range steps {
                 if err := run(src, log, "git", st...); err != nil {
