@@ -1,0 +1,55 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8a7dabd6..68939f30 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,7 +12,7 @@ message(STATUS "--------------------------------")
+ message(STATUS "CMake version: ${CMAKE_VERSION}")
+ 
+ # specify that this binary is to be built with C++14
+-set(CMAKE_CXX_STANDARD 14)
++set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ set(CMAKE_CXX_EXTENSIONS OFF)
+ 
+diff --git a/lib/openssl/crypto/async/arch/async_posix.c b/lib/openssl/crypto/async/arch/async_posix.c
+index 95678d4f..c4605b9f 100644
+--- a/lib/openssl/crypto/async/arch/async_posix.c
++++ b/lib/openssl/crypto/async/arch/async_posix.c
+@@ -56,3 +56,11 @@ void async_fibre_free(async_fibre *fibre)
+ }
+ 
+ #endif
++
++/* UWP4Me patch: bionic has no ucontext, so neither ASYNC_POSIX nor ASYNC_NULL
++   gets enabled. Provide the no-op cleanup that async.c expects. */
++#ifndef ASYNC_POSIX
++void async_local_cleanup(void)
++{
++}
++#endif
+diff --git a/lib/xerces/CMakeLists.txt b/lib/xerces/CMakeLists.txt
+index 8be6dff1..6b73e554 100644
+--- a/lib/xerces/CMakeLists.txt
++++ b/lib/xerces/CMakeLists.txt
+@@ -34,7 +34,7 @@ endif(POLICY CMP0067)
+ 
+ # Try C++14, then fall back to C++11 and C++98.  Used for feature tests
+ # for optional features.
+-set(CMAKE_CXX_STANDARD 14)
++set(CMAKE_CXX_STANDARD 17)
+ 
+ # Use folders (for IDE project grouping)
+ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+diff --git a/src/inc/public/AppxPackaging.hpp b/src/inc/public/AppxPackaging.hpp
+index e3fa5257..9e0e8591 100644
+--- a/src/inc/public/AppxPackaging.hpp
++++ b/src/inc/public/AppxPackaging.hpp
+@@ -1,3 +1,8 @@
++#include <fcntl.h>
++#undef LOCK_MAND
++#undef LOCK_READ
++#undef LOCK_WRITE
++#undef LOCK_RW
+ //
+ //  Copyright (C) 2017 Microsoft.  All rights reserved.
+ //  See LICENSE file in the project root for full license information.

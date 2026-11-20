@@ -1,0 +1,18 @@
+# compiled output
+/uwp4me
+*.exe
+*.obj
+*.msix
+*.appx
+*.part
+*.log
+
+# signing keys (never commit these)
+*.pfx
+*.pem
+*.cer
+*.key
+
+# local build folders
+/build/
+/dist/
